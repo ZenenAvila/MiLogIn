@@ -1,0 +1,17 @@
+{
+  "name": "login",
+  "version": "1.0.0",
+  "description": "Api para Login",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Zenen Avila Suarez",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.7.1"
+  },
+  "devDependencies": {}
+}
