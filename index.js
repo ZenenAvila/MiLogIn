@@ -28,55 +28,53 @@ const pool = new Pool(config);
 ////////////  configuracion consultas ////////////
 
 
-const getUsuarios= async ()=>{
+const getUsuarios = async () => {
     try {
-        pool.connect();
-        const res = await pool.query('select * from usuarios');
-    //console.log(res.rows);
-    pool.end();
-    return res;
+        const res = await pool.query({rowMode:'array',
+        text:'select * from usuarios;'});
+        //console.log(res.rows);
+        //pool.end();
+        var usuarios=`${res.fields[0].name}: ${res.fields[0]}
+        ${res.fields[1].name}: ${res.fields[1]}` ;
+        return usuarios;
     } catch (error) {
         console.log(error);
     }
 }
 
-const insertUsuarios=async()=>{
+const insertUsuarios = async () => {
     try {
-        pool.connect();
-    const text=`insert into usuarios(nombre,apellidos,password) 
-    values('isis','avila aguirre','prueba')`;
+        var contraseña = utf8_encode("contraseña")
+        const text=`insert into usuarios(nombre,apellidos,password)
+        values('oliver','avila trani','${contraseña}')`;
 
-    const res = await pool.query(text)
-    // console.log(res);
-    pool.end();
-    return res;
+        const res = await pool.query(text)
+        console.log(res);
+        //return res;
 
     } catch (error) {
         console.log(error);
     }
 }
 
-const deleteUsuarios= async()=>{
+const deleteUsuarios = async () => {
     try {
-        const text = `delete from usuarios where nombre ='zenen'  `    
-    const res = await pool.query(text);
-    // console.log(res);
-    pool.end();
-    return res;
+        const text = `delete from usuarios where nombre ='zenen'` ;   
+        const res = await pool.query(text);
+        console.log(res);
+        //return res;
 
     } catch (error) {
         console.log(error);
     }
 }
-const updateUser=async()=>{
+const updateUser = async () => {
     try {
         const text=`update usuarios set password = 'prueba2' where
-    nombre='adolfo'`
-    const res= pool.query(text);
-    //console.log(res);
-    pool.end();
-    return res;
-
+        nombre='adolfo'`;
+        const res= await pool.query(text);
+        console.log(res);
+        return res;
     } catch (error) {
         console.log(error)
     }
@@ -92,6 +90,8 @@ app.get('/',(request,response)=>{
 //consultar usuarios
 app.get('/mostrar',(request,response)=>{
     const res=getUsuarios();
+    
+    console.log(res);
     response.json({info:res});
 });
 
