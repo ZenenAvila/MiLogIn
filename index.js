@@ -111,3 +111,11 @@ app.post('/api/actualizar',(request,response)=>{
 app.listen(port,()=>{
     console.log( `API corriendo en el puerto ${port}`);
 });
+
+// const pattern = new RegExp('^[A-Z]+$', 'i');
+// if(pattern.test("Hoa1la")){ 
+//     console.log("valido");
+// }else{
+//     console.log("invalido");
+
+// }
