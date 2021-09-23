@@ -63,46 +63,51 @@ app.get('/mostrar',(request,response)=>{
 });
 
 //insertar usuariosn
-app.get('/insertar',(request,response)=>{
-    var contraseña = btoa("contraseña");
+app.post('/insertar',(request,response)=>{
     pool.query(`insert into usuarios(nombre,apellidos,password)
-                values('oliver','avila trani','${contraseña}');`
+                values('${request.body.nombre}',
+                       '${request.body.apellidos}',
+                       '${btoa(request.body.password)}');`
                 ,(err,res)=>
         {
             if(err){
                 response.json(err.stack);
             }else{
-                response.json("Insertado Correctamente");
+                response.json({"respuesta":"insertado Correctamente"});
             }
         });
 });
 
 //eliminar usuarios
-app.get('/eliminar',(request,response)=>{
+app.post('/eliminar',(request,response)=>{
     pool.query(`update usuarios set eliminado=true 
-    where nombre ='oliver'`,(err,res)=>
+    where id =${request.body.id}`,(err,res)=>
     {
         if(err){
             response.json(err.stack);
         }else{
-            response.json("Eliminado Correctamente");
+            response.json({"respuesta":"eliminado Correctamente"});
         }
     });
 });
 
 //actualizar usuarios
-app.get('/actualizar',(request,response)=>{
-    pool.query(`update usuarios set password = 
-    'prueba2' where nombre='bayron'`,(err,res)=>
+app.post('/actualizar',(request,response)=>{
+    pool.query(`update usuarios 
+                set nombre='${request.body.nombre}',
+                    apellidos='${request.body.apellidos}',
+                    password = '${btoa(request.body.password)}'
+                    where id=${request.body.id}`,(err,res)=>
     {
         if(err){
             response.json(err.stack);
         }else{
-            response.json("actualizar Correctamente");
+            response.json({"respuesta":"actualizado Correctamente"});
         }
     });
 });
 
+//Servidor escuchando
 app.listen(port,()=>{
     console.log( `API corriendo en el puerto ${port}`);
 });
