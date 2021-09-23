@@ -34,7 +34,7 @@ app.get('/',(request,response)=>{
 });
 
 //consultar usuarios
-app.get('/mostrartodos',(request,response)=>{
+app.get('/api/mostrartodos',(request,response)=>{
 
     pool.query(`select * from usuarios 
     order by id asc; `,(err,res)=>
@@ -50,7 +50,7 @@ app.get('/mostrartodos',(request,response)=>{
 var mostrar=`select id,nombre,apellidos,password
 from usuarios where eliminado=false order by id asc;`;
 
-app.get('/mostrar',(request,response)=>{
+app.get('/api/mostrar',(request,response)=>{
 
         pool.query(mostrar,(err,res)=>
         {
@@ -63,7 +63,7 @@ app.get('/mostrar',(request,response)=>{
 });
 
 //insertar usuariosn
-app.post('/insertar',(request,response)=>{
+app.post('/api/insertar',(request,response)=>{
     pool.query(`insert into usuarios(nombre,apellidos,password)
                 values('${request.body.nombre}',
                        '${request.body.apellidos}',
@@ -79,7 +79,7 @@ app.post('/insertar',(request,response)=>{
 });
 
 //eliminar usuarios
-app.post('/eliminar',(request,response)=>{
+app.post('/api/eliminar',(request,response)=>{
     pool.query(`update usuarios set eliminado=true 
     where id =${request.body.id}`,(err,res)=>
     {
@@ -92,7 +92,7 @@ app.post('/eliminar',(request,response)=>{
 });
 
 //actualizar usuarios
-app.post('/actualizar',(request,response)=>{
+app.post('/api/actualizar',(request,response)=>{
     pool.query(`update usuarios 
                 set nombre='${request.body.nombre}',
                     apellidos='${request.body.apellidos}',
