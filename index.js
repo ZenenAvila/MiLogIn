@@ -15,7 +15,11 @@ const app=express();
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
-app.use(response.header('Access-Control-Allow-Origin', '*'));
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+  });
 
 const port=process.env.PORT||5000;
 
