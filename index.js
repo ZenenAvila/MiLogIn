@@ -10,7 +10,7 @@ const app=express();
 
 ////////////  configuracion API ////////////
 app.use(morgan('dev'));
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 
 const port=process.env.PORT||5000;

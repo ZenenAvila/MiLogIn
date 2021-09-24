@@ -4,13 +4,15 @@
     </head>
     <body>
         <form id="form" method="POST">
+            Insertar
+            <input type="text" id="id" placeholder="Id"/>
             <input type="text" id="nombre" placeholder="Nombre"/>
             <input type="text" id="apellidos" placeholder="Apellidos"/>
             <input type="text" id="password" placeholder="Password"/>
             <input type="submit" value="Add Todo"/>
         </form>
         <div id="results">
-
+            
         </div>
     </body>
     <script>
@@ -21,31 +23,35 @@
 
             e.preventDefault()
 
+            var id = document.getElementById('id').value
             var nombre = document.getElementById('nombre').value
             var apellidos = document.getElementById('apellidos').value
             var password = document.getElementById('password').value
 
             //fetch post request
-            fetch('https://loginzenen.herokuapp.com/api/insertar',{
-            method:'POST',
-            body:JSON.stringify({
-                nombre:nombre,
-                apellidos:apellidos,
-                password:password
-            }),
-            headers:{
-                "Content-Type":"application/json; charset=UTF-8"
-            }
-        })
-        .then(function(response){
-            return response.json()
-        })
-        .then(function(data){
-            console.log(data)
-            var results = document.getElementById('results')
-            results.innerHTML=`<p>The title of the todo is ${data.title}</p>
-            <p>the body of todo id ${body}</p>`
-        })
+            fetch('https://loginzenen.herokuapp.com/')
+            // ,{
+            // method: 'GET',
+            // headers:{
+            //     'Content-Type': 'application/json'//, charset=UTF-8"
+            // }
+            // ,
+            // body: JSON.stringify({ "id": id })
+                // nombre:nombre,
+                // apellidos:apellidos,
+                // password:password            
+        // })
+        // .then(function(response){
+        //     return response.json()
+        // })
+        // .then(function(data){
+        //     console.log(data)
+        //     var results = document.getElementById('results')
+        //     results.innerHTML=`<p>The title of the todo is 
+        //         </p>
+        //     <p>the body of todo id </p>`
+        //     console.log(results);
+        // })
 
     })        
     </script>
