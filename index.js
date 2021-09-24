@@ -4,7 +4,10 @@ const { Pool } = require('pg');
 const morgan = require('morgan');
 
 const express=require('express');
+const { response } = require('express');
 const app=express();
+
+
 
 //const bodyParser = require('body-parser');
 
@@ -12,6 +15,7 @@ const app=express();
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
+app.use(response.header('Access-Control-Allow-Origin', '*'));
 
 const port=process.env.PORT||5000;
 
