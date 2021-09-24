@@ -7,9 +7,8 @@ const express=require('express');
 const { response } = require('express');
 const app=express();
 
-
-
-//const bodyParser = require('body-parser');
+const numeros = new RegExp('^[0-9]+$');
+const letras = new RegExp('^[A-ZÁÉÍÓÚÑ ]+$', 'i');
 
 ////////////  configuracion API ////////////
 app.use(morgan('dev'));
@@ -72,6 +71,8 @@ app.get('/api/mostrar',(request,response)=>{
 
 //insertar usuariosn
 app.post('/api/insertar',(request,response)=>{
+    if(letras.test(request.body.nombre) & 
+    letras.test(request.body.apellidos)){
     pool.query(`insert into usuarios(nombre,apellidos,password)
                 values('${request.body.nombre}',
                        '${request.body.apellidos}',
@@ -84,10 +85,15 @@ app.post('/api/insertar',(request,response)=>{
                 response.json({"respuesta":"insertado Correctamente"});
             }
         });
+    }
+    else{
+        response.json({"respuesta":"El nombre y apellidos deben contener solo letras "});
+    }
 });
 
 //eliminar usuarios
 app.post('/api/eliminar',(request,response)=>{
+    if(numeros.test(request.body.id)){
     pool.query(`update usuarios set eliminado=true 
     where id =${request.body.id}`,(err,res)=>
     {
@@ -97,10 +103,17 @@ app.post('/api/eliminar',(request,response)=>{
             response.json({"respuesta":"eliminado Correctamente"});
         }
     });
+    } else{
+        response.json({"respuesta":"El id solo debe contener numeros "});
+    }
 });
 
 //actualizar usuarios
 app.post('/api/actualizar',(request,response)=>{
+    if(numeros.test(request.body.id)){
+    
+    if(letras.test(request.body.nombre) & 
+    letras.test(request.body.apellidos)){
     pool.query(`update usuarios 
                 set nombre='${request.body.nombre}',
                     apellidos='${request.body.apellidos}',
@@ -113,17 +126,16 @@ app.post('/api/actualizar',(request,response)=>{
             response.json({"respuesta":"actualizado Correctamente"});
         }
     });
+}
+else{
+    response.json({"respuesta":"El nombre y apellidos deben contener solo letras "});
+}
+} else{
+    response.json({"respuesta":"El id solo debe contener numeros "});
+}
 });
 
 //Servidor escuchando
 app.listen(port,()=>{
     console.log( `API corriendo en el puerto ${port}`);
 });
-
-// const pattern = new RegExp('^[A-Z]+$', 'i');
-// if(pattern.test("Hoa1la")){ 
-//     console.log("valido");
-// }else{
-//     console.log("invalido");
-
-// }

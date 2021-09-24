@@ -1,26 +1,50 @@
-<html>
+<!DOCTYPE html>
     <head>
         <title>Gestion de usuarios</title>
+        <link rel="stylesheet" href="css/estilos.css" />
     </head>
     <body>
-        <form id="form" method="POST">
-            Insertar
-            <input type="text" id="id" placeholder="Id"/>
-            <input type="text" id="nombre" placeholder="Nombre"/>
-            <input type="text" id="apellidos" placeholder="Apellidos"/>
-            <input type="text" id="password" placeholder="Password"/>
-            <input type="submit" value="Add Todo"/>
-        </form>
         <div id="results">
+            <div id="cabecera">
+                LogIn
+                <span id="tagline">Gestion de usuarios</span>
+                <br><br><br>
+                <form id="form" method="POST">
+                    <table class="table table-striped">
+                        <tr>
+                            <td>
+                            <input type="text" id="id" placeholder="Id"/>
+                        </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            <input type="text" id="nombre" placeholder="Nombre"/>
+                        </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            <input type="text" id="apellidos" placeholder="Apellidos"/>
+                        </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" id="password" placeholder="Password"/>
+                            </td>
+                            <td>
+                                <input type="submit" id="mostrar" value="Mostrar"/>
+                            </td>
+                        </tr>                    
+                    </table>
+                </form>
+            </div>
             
         </div>
     </body>
-    <script>
+    <script language="javaScript">
+
         var form = document.getElementById('form')
 
         form.addEventListener('submit',function(e){
-            //auto submision of the form
-
             e.preventDefault()
 
             var id = document.getElementById('id').value
@@ -28,31 +52,51 @@
             var apellidos = document.getElementById('apellidos').value
             var password = document.getElementById('password').value
 
-            //fetch post request
-            fetch('https://loginzenen.herokuapp.com/')
-            // ,{
-            // method: 'GET',
-            // headers:{
-            //     'Content-Type': 'application/json'//, charset=UTF-8"
-            // }
-            // ,
-            // body: JSON.stringify({ "id": id })
-                // nombre:nombre,
-                // apellidos:apellidos,
-                // password:password            
-        // })
-        // .then(function(response){
-        //     return response.json()
-        // })
-        // .then(function(data){
-        //     console.log(data)
-        //     var results = document.getElementById('results')
-        //     results.innerHTML=`<p>The title of the todo is 
-        //         </p>
-        //     <p>the body of todo id </p>`
-        //     console.log(results);
-        // })
+            fetch('https://loginzenen.herokuapp.com/api/mostrar')
+            
+        .then(function(response){
+            return response.json()
+        })
+        .then(function(data){
+            console.log(data)
+            var results = document.getElementById('results')
+            var tabla=`
+            <div id="usuarios">
+            <table class="table">               
+                <tr>
+                    <td>
+                        Cantidad: ${data.length}
+                    </td>
+                </tr>
+                <tr>
+                    
+                    <td><b>Id</b></td>
+                    <td><b>Nombre</b></td>
+                    <td><b>Apellidos</b></td>
+                    <td><b>Password</b></td> 
+                    
+                </tr> `
 
-    })        
+            for(var i=0;i<data.length;i++){
+            tabla+= `<tr>
+                            <td>${data[i].id}</td>
+                            <td>${data[i].nombre}</td>
+                            <td>${data[i].apellidos}</td>
+                            <td>${data[i].password}</td>
+                        <tr>`;
+                        }
+                        
+            tabla+=`</table>`;
+            results.innerHTML+=tabla            
+
+             results.innerHTML+=`
+             </div> 
+             
+             <div id=footer>
+                Zenén Ávila Suárez
+            </div>
+             `
+        })
+    })     
     </script>
 </html>
