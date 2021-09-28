@@ -4,20 +4,10 @@ const morgan = require('morgan');
 const router=Router();
 const usuariosDao=require(`../dao/usuariosDao`);
 const express=require('express');
-const app=express();
 
 
 const numeros = new RegExp('^[0-9]+$');
 const letras = new RegExp('^[A-ZÁÉÍÓÚÑ ]+$', 'i');
-
-app.use(morgan('dev'));
-app.use(express.urlencoded({extended:false}));
-app.use(express.json());
-
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-  });
 
 //consultar usuarios
 router.get("/api/mostrartodos",async(req,res)=>{
@@ -57,12 +47,33 @@ router.post('/api/insertar',async(req,resp)=>{
     }
 });
  
-app.post('/api/eliminar',async(req,resp)=>{
+router.post('/api/eliminar',async(req,resp)=>{
     if(numeros.test(req.body.id)){
         await usuariosDao.eliminar(req.body.id);
+        resp.json({"respuesta":"eliminado Correctamente"});
+
     } else{
-        response.json({"respuesta":"El id solo debe contener numeros "});
+        resp.json({"respuesta":"El id solo debe contener numeros "});
     }
+});
+
+router.post('/api/actualizar',async(request,response)=>{
+    if(numeros.test(request.body.id)){
+    
+    if(letras.test(request.body.nombre) & 
+    letras.test(request.body.apellidos)){
+    await usuariosDao.actualizar(request.body.id,
+        request.body.nombre,request.body.apellidos,
+        request.body.password)
+        response.json({"respuesta":"actualizado Correctamente"});
+
+}
+else{
+    response.json({"respuesta":"El nombre y apellidos deben contener solo letras "});
+}
+} else{
+    response.json({"respuesta":"El id solo debe contener numeros "});
+}
 });
 
 module.exports=router;

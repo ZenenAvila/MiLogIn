@@ -56,8 +56,21 @@ const eliminar = async(id)=>{
     
     } catch(error)
     {
-        console.log(`error eliminar(dao): ${error}`)
-;    }
+        console.log(`error eliminar(dao): ${error}`);    
+    }
 }
 
-module.exports={mostrarTodos,mostrar,insertar,eliminar}
+const actualizar = async(id,nombre,apellidos,password)=>{
+    try{
+        await pool.query(`update usuarios 
+                set nombre='${nombre}',
+                    apellidos='${apellidos}',
+                    password = '${btoa(password)}'
+                    where id=${id}`);
+    }catch(error)
+    {
+        console.log(`error actualizar(dao): ${error}`);    
+    }
+}
+
+module.exports={mostrarTodos,mostrar,insertar,eliminar,actualizar}
