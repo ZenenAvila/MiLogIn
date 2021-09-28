@@ -12,17 +12,52 @@ const config={
 const pool = new Pool(config);
 
 
-const mostrarTodos = async (apiKey) =>{
+const mostrarTodos = async () =>{
     try{
-        let usuarios = await 
-        pool.query(`select * from usuarios 
-        order by id asc; `);
-
-        return usuarios
+        const usuarios = await pool.query(`select * from usuarios 
+        order by id asc;`);
+        return usuarios.rows;
 
     } catch (error){
-        console.log(`error mostrarTodos(dao): ${error}`)
+        console.log(`error mostrarTodos(dao): ${error}`);
     }
 }
 
-module.exports={mostrarTodos}
+const mostrar = async () =>{
+    try{
+        const usuarios = await pool.query(`select id,nombre, 
+        apellidos,password from usuarios where eliminado=false 
+        order by id asc;`);
+        return usuarios.rows;
+
+    } catch (error){
+        console.log(`error mostrar(dao): ${error}`);
+    }
+}
+
+const insertar =async (nombre,apellidos,password) =>{
+    try{
+        await pool.query(`insert into usuarios
+        (nombre,apellidos,password)
+                values('${nombre}',
+                       '${apellidos}',
+                       '${btoa(password)}');`);
+    }
+    catch(error)
+    {
+        console.log(`error insertar(dao): ${error}`);
+    }
+}
+
+const eliminar = async(id)=>{
+    try{
+        await pool.query(`update usuarios set eliminado=true 
+        where id =${id}`);
+    
+    } catch(error)
+    {
+        console.log(`error eliminar(dao): ${error}`)
+;    }
+}
+
+module.exports={mostrarTodos,mostrar,insertar,eliminar}

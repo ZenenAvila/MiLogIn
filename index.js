@@ -40,62 +40,14 @@ app.get('/',(request,response)=>{
     response.json({info:'la API esta en ejecución'});
 });
 
-//consultar usuarios
+
 app.use(require('./controllers/usuariosController'))
 
-var mostrar=`select id,nombre,apellidos,password
-from usuarios where eliminado=false order by id asc;`;
 
-app.get('/api/mostrar',(request,response)=>{
 
-        pool.query(mostrar,(err,res)=>
-        {
-            if(err){
-                response.json(err.stack);
-            }else{
-                response.json(res.rows);
-            }
-        });
-});
-
-//insertar usuariosn
-app.post('/api/insertar',(request,response)=>{
-    if(letras.test(request.body.nombre) & 
-    letras.test(request.body.apellidos)){
-    pool.query(`insert into usuarios(nombre,apellidos,password)
-                values('${request.body.nombre}',
-                       '${request.body.apellidos}',
-                       '${btoa(request.body.password)}');`
-                ,(err,res)=>
-        {
-            if(err){
-                response.json(err.stack);
-            }else{
-                response.json({"respuesta":"insertado Correctamente"});
-            }
-        });
-    }
-    else{
-        response.json({"respuesta":"El nombre y apellidos deben contener solo letras "});
-    }
-});
 
 //eliminar usuarios
-app.post('/api/eliminar',(request,response)=>{
-    if(numeros.test(request.body.id)){
-    pool.query(`update usuarios set eliminado=true 
-    where id =${request.body.id}`,(err,res)=>
-    {
-        if(err){
-            response.json(err.stack);
-        }else{
-            response.json({"respuesta":"eliminado Correctamente"});
-        }
-    });
-    } else{
-        response.json({"respuesta":"El id solo debe contener numeros "});
-    }
-});
+
 
 //actualizar usuarios
 app.post('/api/actualizar',(request,response)=>{
