@@ -41,18 +41,7 @@ app.get('/',(request,response)=>{
 });
 
 //consultar usuarios
-app.get('/api/mostrartodos',(request,response)=>{
-
-    pool.query(`select * from usuarios 
-    order by id asc; `,(err,res)=>
-    {
-        if(err){
-            response.json(err.stack);
-        }else{
-            response.json(res.rows);
-        }
-    });
-});
+app.use(require('./controllers/usuariosController'))
 
 var mostrar=`select id,nombre,apellidos,password
 from usuarios where eliminado=false order by id asc;`;
