@@ -25,7 +25,7 @@ const mostrar =async()=>{
 //insertar usuariosn
 const insertar = async(nombre,apellidos,password)=>{
     try{
-        if(nombre & apellidos & password)
+        if(nombre!="" & apellidos!="" & password!="")
         {
     if(letras.test(nombre) & letras.test(apellidos)
     ){
@@ -46,7 +46,7 @@ const insertar = async(nombre,apellidos,password)=>{
  
 const eliminar =async(id)=>{
     try{
-        if(id)
+        if(id!="")
         {
     if(numeros.test(id)){
         await usuariosDao.eliminar(id);
@@ -68,7 +68,7 @@ catch(error)
 
 const actualizar=async(id,nombre,apellidos,password)=>{
     try{
-        if(id & nombre & apellidos & password ){
+        if(id!="" & nombre!="" & apellidos!="" & password!="" ){
     if(numeros.test(id)){    
     if(letras.test(nombre) & 
     letras.test(apellidos)){
