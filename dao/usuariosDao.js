@@ -73,4 +73,4 @@ const actualizar = async(id,nombre,apellidos,password)=>{
     }
 }
 
-module.exports={mostrarTodos,mostrar,insertar,eliminar,actualizar}
+module.exports={mostrarTodos,mostrar,insertar,eliminar,actualizar};
